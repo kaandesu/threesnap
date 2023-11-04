@@ -1,37 +1,39 @@
 {
-  "name": "my_package_name",
-  "author": "Your name <yourmail@mail.com> (https://github.com/[USERNAME])",
+  "name": "threesnap",
+  "author": "Your name <kaandesu00@gmail.com> (https://github.com/kaandesu)",
   "version": "0.0.0",
   "license": "MIT",
-  "description": "Your package description",
+  "description": " Full screen, snap scroll library with ready-to-use three.js configurations.",
   "contributors": [
     {
-      "name": "Your name",
-      "email": "yourmail@mail.com"
+      "name": "I. Kaan Yilmaz",
+      "email": "kaandesu00@gmail.com"
     }
   ],
   "keywords": [
-    "some",
-    "keywords",
-    "here"
+    "typescript",
+    "threejs",
+    "fullscreen",
+    "snap-scroll",
+    "scoll"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/[USERNAME]/my_package_name.git"
+    "url": "https://github.com/kaandesu/threesnap.git"
   },
-  "homepage": "https://[USERNAME].github.io/my_package_name/",
+  "homepage": "https://kaandesu.github.io/threesnap/",
   "bugs": {
-    "url": "https://github.com/[USERNAME]/my_package_name/issues"
+    "url": "https://github.com/kaandesu/threesnap/issues"
   },
   "files": [
     "dist"
   ],
-  "main": "./dist/my_package_name.umd.cjs",
-  "module": "./dist/my_package_name.js",
+  "main": "./dist/threesnap.umd.cjs",
+  "module": "./dist/threesnap.js",
   "exports": {
     ".": {
-      "import": "./dist/my_package_name.js",
-      "require": "./dist/my_package_name.umd.cjs",
+      "import": "./dist/threesnap.js",
+      "require": "./dist/threesnap.umd.cjs",
       "types": "./dist/index.d.ts"
     },
     "./style.css": "./dist/style.css"

@@ -3,13 +3,13 @@
 layout: home
 
 hero:
-  name: 'TS Vite NPM Template'
-  text: 'Vitepress documentation example'
-  tagline: My great package tagline
+  name: 'Threesnap'
+  text: 'Add 3D scroll animations to your website with ease'
+  tagline: 'A lightweight, easy to use, and customizable library for adding 3D scroll animations to your website'
   actions:
     - theme: brand
       text: Live Demo
-      link: https://kaandesu.github.io/ts-vite-npm-template/live-demo/index.html
+      link: https://kaandesu.github.io/threesnap/live-demo/index.html
     - theme: alt
       text: Markdown Examples
       link: /markdown-examples
@@ -17,14 +17,14 @@ hero:
       text: API Examples
       link: /api-examples
   image:
-    src: https://raw.githubusercontent.com/kaandesu/ts-vite-npm-template/main/public/logo.webp
-    alt: ts-vite-npm-template
+    src: https://raw.githubusercontent.com/kaandesu/threesnap/main/public/logo.webp
+    alt: threesnap_logo
 
 features:
   - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    details: Work in progress
   - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    details: Work in progress
   - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    details: Work in progress
 ---

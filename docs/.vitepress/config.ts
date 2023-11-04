@@ -2,10 +2,11 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: 'TS npm template',
-  description: 'Vitepress documentation example for ts-vite-npm-template repository',
+  title: 'Threesnap',
+  description:
+    'A lightweight, easy to use, and customizable library for adding 3D scroll animations to your website',
   lang: 'en-US',
-  base: '/ts-vite-npm-template/',
+  base: '/threesnap/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/logo.webp',
@@ -24,6 +25,6 @@ export default defineConfig({
       },
     ],
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/kaandesu/ts-vite-npm-template' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/kaandesu/threesnap' }],
   },
 })
