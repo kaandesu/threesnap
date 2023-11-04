@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
       },
       resolve: {
         alias: {
-          '~': resolve(__dirname, 'src', 'myPackagePlugin'),
+          '~': resolve(__dirname, 'src', 'threesnapPlugin'),
         },
       },
       build: {
@@ -28,14 +28,14 @@ export default defineConfig(({ mode }) => {
       },
       resolve: {
         alias: {
-          '~': resolve(__dirname, 'src', 'myPackagePlugin'),
+          '~': resolve(__dirname, 'src', 'threesnapPlugin'),
         },
       },
       build: {
         lib: {
-          entry: resolve(__dirname, 'src/myPackagePlugin', 'index.ts'),
-          name: 'my_package_name',
-          fileName: 'my_package_name',
+          entry: resolve(__dirname, 'src/threesnapPlugin', 'index.ts'),
+          name: 'threesnap',
+          fileName: 'threesnap',
         },
       },
     }
