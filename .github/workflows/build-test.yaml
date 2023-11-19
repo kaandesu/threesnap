@@ -1,3 +1,4 @@
+
 name: Build and Test
 
 on:
@@ -17,17 +18,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Setup Node.js and install pnpm
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
-          cache: 'pnpm'
+          node-version: 18.x
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
-        run: |
-          npm install -g pnpm
-          pnpm install
+        run: pnpm install
 
       - name: Build and test
-        run: pnpm run build
-
+        run: pnpm build
