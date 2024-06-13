@@ -45,7 +45,7 @@
     "build": "npm run test && vite build --mode production && npm run generate:types && npm run build:pages",
     "build:lib": "npm run test && vite build --mode production && npm run generate:types",
     "clean": "rm -rf ./dist && rm -rf ./live-demo && rm -rf ./coverage",
-    "coverage:web": "http-server ./coverage",    
+    "coverage:web": "http-server ./coverage",
     "generate:types": "tsc -p tsconfig-build.json --declaration --emitDeclarationOnly true --outdir ./dist",
     "changeset": "changeset",
     "test": "vitest run",
@@ -64,5 +64,9 @@
     "vite": "^4.4.5",
     "vitepress": "^1.0.0-rc.24",
     "vitest": "^0.34.6"
+  },
+  "dependencies": {
+    "@types/three": "^0.165.0",
+    "three": "^0.165.0"
   }
 }
