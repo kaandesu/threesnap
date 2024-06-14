@@ -1,7 +1,7 @@
 {
   "name": "threesnap",
-  "author": "Your name <kaandesu00@gmail.com> (https://github.com/kaandesu)",
-  "version": "0.0.0",
+  "author": "kaandesu",
+  "version": "0.0.1",
   "license": "MIT",
   "description": " Full screen, snap scroll library with ready-to-use three.js configurations.",
   "contributors": [

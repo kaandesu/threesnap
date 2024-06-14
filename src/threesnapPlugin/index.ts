@@ -4,11 +4,11 @@ import * as THREE from "three";
 // Function to create page indicators
 const createPageIndicators = (): void => {
   const container = document.querySelector<HTMLDivElement>(
-    ".threesnap-page-container"
+    ".threesnap .page-container"
   );
-  const pages = document.querySelectorAll<HTMLDivElement>(".threesnap-page");
+  const pages = document.querySelectorAll<HTMLDivElement>(".threesnap .page");
   const indicatorField = document.getElementById(
-    "indicator-field"
+    "threesnap-indicator-field"
   ) as HTMLDivElement;
 
   if (!container || !indicatorField) {
@@ -84,8 +84,6 @@ const createPageIndicators = (): void => {
 
   animate();
 
-  // Update indicators and cube position on scroll
-
   container.addEventListener("scroll", () => {
     const viewportHeight = window.innerHeight;
     const scrollPosition = container.scrollTop;
@@ -148,6 +146,7 @@ const createPageIndicators = (): void => {
       currentPageIndex = closestPageIndex;
     }
   });
+
   // Function to update indicators
   function updateIndicators(index: number): void {
     const indicators =
