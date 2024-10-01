@@ -8,7 +8,9 @@ interface Page {
   z: number;
 }
 
+// TODO: ask for a mesh or for a model
 interface Config {
+  fixedZ?: number;
   pages: Page[];
 }
 
@@ -59,7 +61,7 @@ const createThreesnap = (config: Config): void => {
   scene.add(cube);
   scene.background = null;
 
-  camera.position.z = 5;
+  camera.position.z = config.fixedZ ?? 5;
 
   const percentagePositions = config.pages;
   const scaleFactor = { x: 0.01, y: 0.01, z: 4 };
@@ -156,18 +158,5 @@ const createThreesnap = (config: Config): void => {
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 };
-
-const init = () => {
-  createThreesnap({
-    pages: [
-      { x: 0, y: 0, z: 0 },
-      { x: 30, y: 25, z: -120 },
-      { x: 0, y: 0, z: 20 },
-      { x: -25, y: -35, z: 40 },
-    ],
-  });
-};
-
-document.addEventListener("DOMContentLoaded", init);
 
 export { createThreesnap };

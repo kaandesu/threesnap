@@ -7,7 +7,21 @@
     <title>Vite + TS</title>
   </head>
   <body>
-    <script type="module" src="/src/threesnapPlugin/index.ts"></script>
+    <script type="module">
+      import { createThreesnap } from "/src/threesnapPlugin/index.ts";
+      const setup = () => {
+        createThreesnap({
+          fixedZ: 5,
+          pages: [
+            { x: 0, y: 0, z: 0 },
+            { x: 30, y: 25, z: -120 },
+            { x: 0, y: 0, z: 20 },
+            { x: -25, y: -35, z: 40 },
+          ],
+        });
+      };
+      document.addEventListener("DOMContentLoaded", setup);
+    </script>
     <div class="threesnap" style="color: white">
       <div class="page-container">
         <div class="page">page1</div>
