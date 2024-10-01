@@ -94,7 +94,7 @@ const createThreesnap = (config: Config): void => {
 
   // Load the GLB model
   loader.load(
-    "../../public/apollo_11_command_module_exterior.glb", // replace with the actual path to your .glb file
+    "./apollo_11_command_module_exterior.glb", // replace with the actual path to your .glb file
     function (gltf) {
       model = gltf.scene;
       const {
