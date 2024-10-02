@@ -2,13 +2,16 @@ import "./style.css";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-interface Page {
-  dark?: boolean;
-  x: number;
-  y: number;
-  z: number;
+interface ModelConfig {
+  modelPath: string;
+  position: { x: number; y: number; z: number };
   rotation?: { x: number; y: number; z: number };
   scale?: { x: number; y: number; z: number };
+}
+
+interface Page {
+  dark?: boolean;
+  models: ModelConfig[];
 }
 
 // TODO: ask for a mesh or for a model
@@ -90,48 +93,36 @@ const createThreesnap = (config: Config): void => {
   scene.add(ambientLight);
 
   const loader = new GLTFLoader();
-  let model: THREE.Object3D;
+  const models: THREE.Object3D[] = []; // Store loaded models
+  //
+  // Load the GLB models for each page and model
+  config.pages.forEach((page) => {
+    page.models.forEach((modelConfig) => {
+      loader.load(
+        modelConfig.modelPath,
+        (gltf) => {
+          const model = gltf.scene;
+          const { x, y, z } = modelConfig.scale ?? { x: 1, y: 1, z: 1 };
+          model.scale.set(x, y, z);
 
-  // Load the GLB model
-  loader.load(
-    "./apollo_11_command_module_exterior.glb", // replace with the actual path to your .glb file
-    function (gltf) {
-      model = gltf.scene;
-      const {
-        x: scaleX,
-        y: scaleY,
-        z: scaleZ,
-      }: {
-        x: number;
-        y: number;
-        z: number;
-      } = config.pages[0].scale ?? { x: 1, y: 1, z: 1 };
-      model.scale.set(scaleX, scaleY, scaleZ);
+          const pos = modelConfig.position;
+          model.position.set(pos.x, pos.y, pos.z);
 
-      const {
-        x: posX,
-        y: posY,
-        z: posZ,
-      }: {
-        x: number;
-        y: number;
-        z: number;
-      } = config.pages[0].scale ?? { x: 0, y: 0, z: 0 };
-      model.position.set(posX, posY, posZ);
-
-      scene.add(model);
-    },
-    undefined,
-    function (error) {
-      console.error("An error happened while loading the model:", error);
-    }
-  );
+          scene.add(model);
+          models.push(model);
+        },
+        undefined,
+        (error) => {
+          console.error("An error happened while loading the model:", error);
+        }
+      );
+    });
+  });
 
   scene.background = null;
 
   camera.position.z = config.fixedZ ?? 5;
 
-  const percentagePositions = config.pages;
   const scaleFactor = { x: 0.01, y: 0.01, z: 4 };
 
   const percentageToPosition = (percentage: {
@@ -159,82 +150,88 @@ const createThreesnap = (config: Config): void => {
     const viewportCenter = scrollPosition + viewportHeight / 2;
 
     const fractionalPageIndex = scrollPosition / viewportHeight;
-
     const floorPageIndex = Math.floor(fractionalPageIndex);
     const ceilPageIndex = Math.ceil(fractionalPageIndex);
 
     const startIndex = Math.max(0, Math.min(floorPageIndex, pages.length - 1));
     const endIndex = Math.max(0, Math.min(ceilPageIndex, pages.length - 1));
 
-    const startPos = percentageToPosition(percentagePositions[startIndex]);
-    const endPos = percentageToPosition(percentagePositions[endIndex]);
-
-    const startRotation = percentageToRotation(
-      percentagePositions[startIndex].rotation || { x: 0, y: 0, z: 0 }
-    );
-    const endRotation = percentageToRotation(
-      percentagePositions[endIndex].rotation || { x: 0, y: 0, z: 0 }
-    );
-
     const scrollFraction = fractionalPageIndex - startIndex;
 
-    model.rotation.x = THREE.MathUtils.lerp(
-      startRotation.x,
-      endRotation.x,
-      scrollFraction
-    );
-    model.rotation.y = THREE.MathUtils.lerp(
-      startRotation.y,
-      endRotation.y,
-      scrollFraction
-    );
-    model.rotation.z = THREE.MathUtils.lerp(
-      startRotation.z,
-      endRotation.z,
-      scrollFraction
-    );
+    const startPage = config.pages[startIndex];
+    const endPage = config.pages[endIndex];
 
-    // Update scale
-    const startScale = percentageToScale(
-      percentagePositions[startIndex].scale || { x: 1, y: 1, z: 1 }
-    );
-    const endScale = percentageToScale(
-      percentagePositions[endIndex].scale || { x: 1, y: 1, z: 1 }
-    );
+    startPage.models.forEach((startModel, modelIndex) => {
+      const endModel = endPage.models[modelIndex] || startModel;
 
-    model.scale.x = THREE.MathUtils.lerp(
-      startScale.x,
-      endScale.x,
-      scrollFraction
-    );
-    model.scale.y = THREE.MathUtils.lerp(
-      startScale.y,
-      endScale.y,
-      scrollFraction
-    );
-    model.scale.z = THREE.MathUtils.lerp(
-      startScale.z,
-      endScale.z,
-      scrollFraction
-    );
+      // Position
+      const startPos = percentageToPosition(startModel.position);
+      const endPos = percentageToPosition(endModel.position);
 
-    if (model) {
-      model.position.x = THREE.MathUtils.lerp(
+      models[modelIndex].position.x = THREE.MathUtils.lerp(
         startPos.x,
         endPos.x,
         scrollFraction
       );
-      model.position.y = THREE.MathUtils.lerp(
+      models[modelIndex].position.y = THREE.MathUtils.lerp(
         startPos.y,
         endPos.y,
         scrollFraction
       );
-      model.position.z = THREE.MathUtils.lerp(
+      models[modelIndex].position.z = THREE.MathUtils.lerp(
         startPos.z,
         endPos.z,
         scrollFraction
       );
-    }
+
+      // Rotation
+      const startRotation = percentageToRotation(
+        startModel.rotation || { x: 0, y: 0, z: 0 }
+      );
+      const endRotation = percentageToRotation(
+        endModel.rotation || { x: 0, y: 0, z: 0 }
+      );
+
+      models[modelIndex].rotation.x = THREE.MathUtils.lerp(
+        startRotation.x,
+        endRotation.x,
+        scrollFraction
+      );
+      models[modelIndex].rotation.y = THREE.MathUtils.lerp(
+        startRotation.y,
+        endRotation.y,
+        scrollFraction
+      );
+      models[modelIndex].rotation.z = THREE.MathUtils.lerp(
+        startRotation.z,
+        endRotation.z,
+        scrollFraction
+      );
+
+      // Scale
+      const startScale = percentageToScale(
+        startModel.scale || { x: 1, y: 1, z: 1 }
+      );
+      const endScale = percentageToScale(
+        endModel.scale || { x: 1, y: 1, z: 1 }
+      );
+
+      models[modelIndex].scale.x = THREE.MathUtils.lerp(
+        startScale.x,
+        endScale.x,
+        scrollFraction
+      );
+      models[modelIndex].scale.y = THREE.MathUtils.lerp(
+        startScale.y,
+        endScale.y,
+        scrollFraction
+      );
+      models[modelIndex].scale.z = THREE.MathUtils.lerp(
+        startScale.z,
+        endScale.z,
+        scrollFraction
+      );
+    });
 
     let closestPageIndex = currentPageIndex;
     let minDistance = Infinity;
