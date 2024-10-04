@@ -98,6 +98,30 @@ const createThreesnap = (config: Config): void => {
         const model = gltf.scene;
         scene.add(model);
         models.push(model);
+
+        // Set the initial position, rotation, and scale for each model based on the first page config
+        const initialConfig = modelConfig.pageConfigs[0]; // First page config
+
+        const initialPosition = percentageToPosition(initialConfig.position);
+        model.position.set(
+          initialPosition.x,
+          initialPosition.y,
+          initialPosition.z
+        );
+
+        const initialRotation = percentageToRotation(
+          initialConfig.rotation || { x: 0, y: 0, z: 0 }
+        );
+        model.rotation.set(
+          initialRotation.x,
+          initialRotation.y,
+          initialRotation.z
+        );
+
+        const initialScale = percentageToScale(
+          initialConfig.scale || { x: 1, y: 1, z: 1 }
+        );
+        model.scale.set(initialScale.x, initialScale.y, initialScale.z);
       },
       undefined,
       (error) => {
@@ -127,8 +151,6 @@ const createThreesnap = (config: Config): void => {
 
   animate();
 
-  const rotationRadius = 10;
-
   function addStar() {
     const geometry = new THREE.SphereGeometry(0.2, 24, 24);
     const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
@@ -144,9 +166,6 @@ const createThreesnap = (config: Config): void => {
   }
 
   if (config.particlesEnabled) Array.from({ length: 200 }).forEach(addStar);
-
-  const magicConstant = 5; // Adjust this constant for desired camera downward movement
-  const baseY = 5; // Base Y position for the camera
 
   container.addEventListener("scroll", () => {
     const viewportHeight = window.innerHeight;
@@ -172,18 +191,21 @@ const createThreesnap = (config: Config): void => {
 
     const scrollFraction = fractionalPageIndex - startIndex;
 
+    // const magicConstant = 5; // Adjust this constant for desired camera downward movement
+    // const baseY = 5; // Base Y position for the camera
+    // const rotationRadius = 10;
     // Calculate the camera's angle and new position
-    const angle = fractionalPageIndex * (Math.PI / totalPages); // Rotate based on total pages
-    const cameraX = rotationRadius * Math.cos(angle);
-    const cameraZ = rotationRadius * Math.sin(angle);
+    // const angle = fractionalPageIndex * (Math.PI / totalPages); // Rotate based on total pages
+    // const cameraX = rotationRadius * Math.cos(angle);
+    // const cameraZ = rotationRadius * Math.sin(angle);
 
     // Update camera position
-    camera.position.set(
-      cameraX,
-      baseY - (scrollPosition / viewportHeight) * magicConstant,
-      cameraZ
-    );
-    camera.lookAt(0, 0, 0); // Make the camera look at the center
+    // camera.position.set(
+    //   cameraX,
+    //   baseY - (scrollPosition / viewportHeight) * magicConstant,
+    //   cameraZ
+    // );
+    // camera.lookAt(0, 0, 0); // Make the camera look at the center
 
     models.forEach((model, modelIndex) => {
       const modelConfig = config.models[modelIndex];
