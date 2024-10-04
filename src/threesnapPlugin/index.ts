@@ -13,6 +13,7 @@ interface ModelConfig {
 
 interface Config {
   fixedZ?: number;
+  particlesEnabled?: boolean;
   models: ModelConfig[];
 }
 
@@ -142,7 +143,7 @@ const createThreesnap = (config: Config): void => {
     scene.add(star);
   }
 
-  Array.from({ length: 200 }).forEach(addStar);
+  if (config.particlesEnabled) Array.from({ length: 200 }).forEach(addStar);
 
   const magicConstant = 5; // Adjust this constant for desired camera downward movement
   const baseY = 5; // Base Y position for the camera
